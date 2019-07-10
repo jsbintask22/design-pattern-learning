@@ -12,6 +12,7 @@
         <module>singleton</module>
         <module>state</module>
         <module>observer</module>
+        <module>strategy</module>
     </modules>
 
     <dependencyManagement>
