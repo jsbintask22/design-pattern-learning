@@ -9,7 +9,17 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>decorator</artifactId>
+    <artifactId>proxy</artifactId>
 
+    <packaging>pom</packaging>
+    <modules>
+        <module>proxy-agent</module>
+        <module>proxy-app</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
 
 </project>

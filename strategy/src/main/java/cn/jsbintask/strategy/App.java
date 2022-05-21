@@ -1,11 +1,14 @@
 package cn.jsbintask.strategy;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author jsbintask@gmail.com
  * @date 2019/7/10 14:58
  */
+
+@Data
 @Slf4j
 public class App {
     public static void main(String[] args) {
@@ -31,5 +34,8 @@ public class App {
         travelService.doTravel();
 
         System.out.println("'TravelService': 您已到达目的地.");
+
+        // 创建一个字符串；
+        // 打印字符串
     }
 }
