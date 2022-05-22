@@ -36,7 +36,8 @@ public class Main {
         System.out.println(marketProxy.toString());
 
         // 怎么看到具体的 动态生成的 代理类？
-
+        Integer i = -889275714;
+        System.out.println(Integer.toHexString(i));
     }
 
     /**
