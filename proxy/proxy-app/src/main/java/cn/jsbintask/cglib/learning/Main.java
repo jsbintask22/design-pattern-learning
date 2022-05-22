@@ -1,4 +1,4 @@
-package cn.jsbintask.cglib;
+package cn.jsbintask.cglib.learning;
 
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
