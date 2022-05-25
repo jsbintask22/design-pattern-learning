@@ -1,9 +1,6 @@
 package cn.jsbintask.instrumentation;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.*;
 
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
@@ -18,7 +15,7 @@ import static org.objectweb.asm.Opcodes.*;
 public class MyClassTransformer implements ClassFileTransformer {
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-        if (className.startsWith("cn/jsbintask")) {
+        if (className.startsWith("java/lang/Integer")) {
             System.out.println("MyClassTransformer.transform()  " + className);
 
             // 给每个方法调用前都 打印 一个日志
@@ -43,11 +40,38 @@ public class MyClassTransformer implements ClassFileTransformer {
         @Override
         public void visitCode() {
             mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-            mv.visitLdcInsn("tostring before execute from jianbin.:");
+            mv.visitLdcInsn("toString before execute from jianbin.");
             mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
+            mv.visitEnd();
         }
 
+        @Override
+        public void visitInsn(int opcode) {
+            if (opcode == ARETURN) {
+                mv.visitLdcInsn("new vlaue");
+                mv.visitInsn(ARETURN);
+                mv.visitEnd();
+            } else {
+                super.visitInsn(opcode);
+            }
 
+        }
+
+        /* @Override
+        public void visitInsn(int opcode) {
+            if (opcode == ARETURN) {
+                mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+                mv.visitLdcInsn("return toString after execute from jianbin.");
+                mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
+
+                mv.visitLdcInsn("new value from jianbin.");
+                mv.visitInsn(ARETURN);
+                mv.visitEnd();
+
+            } else {
+                super.visitInsn(opcode);
+            }
+        }*/
     }
 
     public class MyClassVisitor extends ClassVisitor {

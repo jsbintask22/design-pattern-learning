@@ -1,4 +1,4 @@
-package cn.jsbintask.visitor;
+package cn.jsbintask.visitor.v2;
 
 /**
  * @author jianbin.
@@ -18,6 +18,9 @@ public class Home {
 
         // 老丈人访问；
         home.accept(home.new FatherInLaw());
+
+        // 同样，这个是如果要有新的身份的人要来访问。 只需新增一个 HomeVisitor 类。 不用修改房子本身的结构。 nice
+        // 思考 局限？
     }
 
 

@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>stretagy</artifactId>
+    <artifactId>strategy</artifactId>
     <description>策略模式使用简介</description>
 
 </project>

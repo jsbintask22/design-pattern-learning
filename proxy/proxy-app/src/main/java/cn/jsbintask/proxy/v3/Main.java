@@ -1,43 +1,26 @@
 package cn.jsbintask.proxy.v3;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.RandomUtil;
-
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 
 /**
- * @author jianbin.
- * @date 2022/5/21 17:10
- *
- * 针对 v3 版本留下的问题； 我们通过 动态代理解决；
- *
+ * @author aaron.zou
+ * @date 2022/5/24 7:51 PM
  */
 public class Main {
 
     public static void main(String[] args) {
-        // jdk 动态代理
-        Sellable sellable = new HouseOwner(80);
+        HouseOwner houseOwner = new HouseOwner(80);
 
-        System.setProperty("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
-
-        // 时间代理；
-        InvocationHandler handler = new TimeProxy(sellable);
-
-        Sellable timeProxy = (Sellable) Proxy.newProxyInstance(sellable.getClass().getClassLoader(), new Class[]{Sellable.class}, handler);
+        // 获得记录时间能力。
+        TimeProxy timeProxy = new TimeProxy(houseOwner);
         timeProxy.sell();
 
-        // 市场代理；
-        InvocationHandler handler2 = new MarketProxy(sellable);
-        Sellable marketProxy = (Sellable) Proxy.newProxyInstance(sellable.getClass().getClassLoader(), new Class[]{Sellable.class}, handler2);
-        marketProxy.sell();
+        // 获得事务能力。
+        TransactionProxy transactionProxy = new TransactionProxy(houseOwner);
+        transactionProxy.sell();
 
-        System.out.println(marketProxy.toString());
+        // 我有很多的 场景 都要记录时间、事务、市场行情 等等。 我应该为每种场景一一去实现子类 Proxy 代理吗？
 
-        // 怎么看到具体的 动态生成的 代理类？
-        Integer i = -889275714;
-        System.out.println(Integer.toHexString(i));
     }
 
     /**
@@ -65,53 +48,60 @@ public class Main {
         }
     }
 
-    static class TimeProxy implements InvocationHandler {
-        private Sellable sellable;
-
-        public TimeProxy(Sellable sellable) {
+    static class TimeProxy implements Sellable {
+        HouseOwner sellable;
+        public TimeProxy(HouseOwner sellable) {
             this.sellable = sellable;
         }
 
         @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            if (method.getName().equals("sell")) {
-                System.out.println("操作开始时间: " + DateUtil.now());
+        public void sell() {
+            System.out.println("我开始操作了，时间是：" + DateUtil.now());
+            sellable.sell();
+            System.out.println("我操作完成了了，时间是：" + DateUtil.now());
+        }
+    }
+
+    static class Translates {
+        void start() {
+            System.out.println("事务开始。");
+        }
+
+        void commit() {
+            System.out.println("事务完成。 提交.");
+        }
+
+        void rollback(Exception e) {
+            System.out.println("事务异常。回滚.");
+        }
+
+        void close() {
+            System.out.println("事务结束。关闭.");
+        }
+    }
+
+    static class TransactionProxy implements Sellable {
+        HouseOwner sellable;
+
+        private Translates translates = new Translates();
+
+        public TransactionProxy(HouseOwner sellable) {
+            this.sellable = sellable;
+        }
+
+
+        @Override
+        public void sell() {
+            translates.start();
+
+            try {
                 sellable.sell();
-                System.out.println("操作结束时间: " + DateUtil.now());
-                return null;
+                translates.commit();
+            } catch (Exception e) {
+                translates.rollback(e);
+            } finally {
+                translates.close();
             }
-
-            return method.invoke(sellable, args);
         }
     }
-
-    /**
-     * 行情代理，检查当前市场行情； 再销售；
-     */
-    static class MarketProxy implements InvocationHandler {
-        private Sellable sellable;
-
-        public MarketProxy(Sellable sellable) {
-            this.sellable = sellable;
-        }
-
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            if (method.getName().equals("sell")) {
-                int marketPrice = RandomUtil.randomInt(70, 100);
-                System.out.println("检查行情，当前价格: " + marketPrice);
-                if (marketPrice > 80) {
-                    System.out.println("当前市场行情好，肯定还能涨，不卖。");
-                } else {
-                    sellable.sell();
-                }
-
-                return null;
-            }
-
-            return method.invoke(sellable, args);
-        }
-
-    }
-
 }

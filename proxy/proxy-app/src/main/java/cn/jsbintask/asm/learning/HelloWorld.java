@@ -40,6 +40,8 @@ public class HelloWorld {
         Printer printer = asmCode ? new ASMifier() : new Textifier();
         PrintWriter printWriter = new PrintWriter(System.out, true);
         TraceClassVisitor traceClassVisitor = new TraceClassVisitor(null, printer, printWriter);
+
+
         new ClassReader(className).accept(traceClassVisitor, parsingOptions);
     }
 

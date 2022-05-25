@@ -51,8 +51,44 @@
             <artifactId>tools</artifactId>
             <version>8</version>
             <scope>system</scope>
-            <systemPath>G:\intellj_workspace\design-pattern-learning\libs\tools.jar</systemPath>
+            <systemPath>/Users/aaron.zou/Documents/temp/tools.jar</systemPath>
         </dependency>
+
+        <dependency>
+            <groupId>com.jetbrains</groupId>
+            <artifactId>tools</artifactId>
+            <version>8</version>
+            <scope>system</scope>
+            <systemPath>/Users/aaron.zou/Documents/个人/ja-netfilter-all/ja-netfilter.jar</systemPath>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.jetbrains</groupId>
+            <artifactId>tools-hideme</artifactId>
+            <version>8</version>
+            <scope>system</scope>
+            <systemPath>/Users/aaron.zou/Documents/个人/ja-netfilter-all/plugins-jetbrains/hideme.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jetbrains</groupId>
+            <artifactId>tools-power</artifactId>
+            <version>8</version>
+            <scope>system</scope>
+            <systemPath>/Users/aaron.zou/Documents/个人/ja-netfilter-all/plugins-jetbrains/power.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jetbrains</groupId>
+            <artifactId>tools-dns</artifactId>
+            <version>8</version>
+            <scope>system</scope>
+            <systemPath>/Users/aaron.zou/Documents/个人/ja-netfilter-all/plugins-jetbrains/dns.jar</systemPath>
+        </dependency>
+
+
+
     </dependencies>
 
     <build>
@@ -92,9 +128,6 @@
                             <Can-Set-Native-Method-Prefix>true</Can-Set-Native-Method-Prefix>
                         </manifestEntries>
                     </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
                 </configuration>
             </plugin>
         </plugins>
